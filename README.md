@@ -1,1 +1,2 @@
-# Solo Project
+# lukislukis
+Solo project for codeworks
