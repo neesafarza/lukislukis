@@ -1,39 +1,46 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './Canvas.module.scss';
-
 import {fabric} from 'fabric'
+import Tools from "../Tools/Tools"
 
-class Canvas extends React.Component {
 
-    componentDidMount() {
-        this.initCanvas();
-    }
 
-    initCanvas() {
-        this.the_canvas = new fabric.Canvas('main-canvas', {
+function Canvas () {
+    const [canvas, setCanvas] = useState({})
+
+
+
+     const initCanvas = () => {
+            return new fabric.Canvas('main-canvas', {
             preserveObjectStacking: true,
             height: 600,
             width: 800,
-            backgroundColor: 'red',
+            backgroundColor: 'cyan',
             isDrawingMode: true,
         });
     }
 
-    save = () => {
-        console.log(this.the_canvas.toJSON());
+    useEffect( () => {
+        setCanvas(initCanvas())
+    }, [])
+
+    const save = () => {
+        console.log(canvas.toJSON());
         // send to api service for backend save call
     }
 
-    render() {
-        return (
-            <div className={styles.Canvas} data-testid="Canvas">
-                <canvas style={{border: 'so lid 1px #eee'}} id='main-canvas'>
-                </canvas>
-                <button className={styles.saveButton} onClick={this.save}/>
+
+    return (
+        <div className={styles.Canvas} data-testid="Canvas">
+            <canvas style={{border: 'so lid 1px #eee'}} id='main-canvas'>
+            </canvas>
+            <div className={'toolbox'}>
+                <Tools canvas={canvas}/>
             </div>
-        )
-    }
-};
+            <button className={styles.saveButton} onClick={save}>save</button>
+        </div>
+    )
+}
 
 Canvas.propTypes = {};
 
