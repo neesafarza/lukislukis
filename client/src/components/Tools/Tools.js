@@ -52,11 +52,31 @@ function Tools ({canvas}) {
         rect.set('fill', 'red');
         rect.set({ strokeWidth: 5, stroke: 'rgba(100,200,200,0.5)' });
         rect.set('angle', 15).set('flipY', true);
-        rect.set({ width: 100, height: 80, fill: '#f55', opacity: 0.7 });
+        rect.set({ width: 100, height: 80, fill: '#f55' });
         rect.set('selectable', true);
         canvas.add(rect).setActiveObject(rect);
+    }
 
+    const addTriangle = () => {
+        setDrawingMode(false);
+        const triangle = new fabric.Triangle();
+        triangle.set('fill', 'red');
+        triangle.set({ strokeWidth: 5, stroke: 'rgba(100,200,200,0.5)' });
+        triangle.set('angle', 15).set('flipY', true);
+        triangle.set({ width: 100, height: 80, fill: '#f55' });
+        triangle.set('selectable', true);
+        canvas.add(triangle).setActiveObject(triangle);
+    }
 
+    const addCircle = () => {
+        setDrawingMode(false);
+        const circle = new fabric.Circle();
+        circle.set('fill', 'red');
+        circle.set({ strokeWidth: 5, stroke: 'rgba(100,200,200,0.5)' });
+        circle.set('angle', 15).set('flipY', true);
+        circle.set({ radius: 100, height: 80, fill: '#f55' });
+        circle.set('selectable', true);
+        canvas.add(circle).setActiveObject(circle);
     }
 
     return (
@@ -68,6 +88,10 @@ function Tools ({canvas}) {
             <button onClick={changeBrushType} value={BrushTypes.SPRAY}>spray</button>
             <button onClick={changeBrushType} value={BrushTypes.PENCIL}>pencil</button>
             <button onClick={addRectangle}>rectangle</button>
+            <button onClick={addTriangle}>Triangle</button>
+            <button onClick={addCircle}>Circle</button>
+
+
 
         </div>
     )
