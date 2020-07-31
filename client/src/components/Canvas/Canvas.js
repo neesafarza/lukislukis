@@ -3,8 +3,11 @@ import styles from './Canvas.module.scss';
 import {fabric} from 'fabric'
 import Tools from "../Tools/Tools"
 import ApiService from "../../ApiService";
+import io from 'socket.io-client';
 
 const MAX_SIZE = 5_000_000
+
+const socket = io('http://localhost:4000');
 
 function Canvas () {
     const [canvas, setCanvas] = useState({})
@@ -21,12 +24,14 @@ function Canvas () {
     }
 
     useEffect( () => {
+        socket.on('saving', (data) => {
+            console.log(data);
+        })
         ApiService.getResource('main-canvas')
             .then(res => {
                 res.json().then((data) => {
                     setId(data._id)
                     if(data.canvasData) {
-                        console.log(data.canvasData)
                         const importCanvas = initCanvas();
                          importCanvas.loadFromJSON(data.canvasData, () => {
                              setCanvas(importCanvas);
@@ -44,15 +49,15 @@ function Canvas () {
     }, [])
 
     const save = () => {
-        console.log(canvas)
         if(canvas && JSON.stringify(canvas.toJSON()).length < MAX_SIZE) {
             const body = {
                 _id: id,
-                canvasData: canvas.toJSON(),
+                canvasData: JSON.stringify(canvas.toJSON()),
             }
             ApiService.createResource('canvas', body, 'PUT')
                 .then(res => console.log(res))
                 .catch(err => console.log(err))
+                socket.emit('save', JSON.stringify(body.canvasData));
         }   else {
             alert('Your canvas is too big!!')
         }
