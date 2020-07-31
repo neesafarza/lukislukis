@@ -13,6 +13,7 @@ function Canvas () {
     const [canvas, setCanvas] = useState({})
     const [id, setId] = useState('')
 
+
      const initCanvas = () => {
             return new fabric.Canvas('main-canvas', {
             preserveObjectStacking: true,
@@ -24,9 +25,19 @@ function Canvas () {
     }
 
     useEffect( () => {
+        socket.on('connection', (data) => setId(data))
         socket.on('saving', (data) => {
-            console.log(data);
+            if(Object.keys(canvas).length > 1) {
+                canvas.loadFromJSON(JSON.parse(data.data), () => {
+                    setCanvas(canvas);
+                    canvas.renderAll();
+                })
+            }
         })
+        
+    }, [canvas])
+
+    useEffect(() => {
         ApiService.getResource('main-canvas')
             .then(res => {
                 res.json().then((data) => {
@@ -46,7 +57,7 @@ function Canvas () {
             }).catch((err) => {
                 console.error(err);
         });
-    }, [])
+    },[]);
 
     const save = () => {
         if(canvas && JSON.stringify(canvas.toJSON()).length < MAX_SIZE) {
@@ -57,7 +68,10 @@ function Canvas () {
             ApiService.createResource('canvas', body, 'PUT')
                 .then(res => console.log(res))
                 .catch(err => console.log(err))
-                socket.emit('save', JSON.stringify(body.canvasData));
+                socket.emit('save', {
+                    data: JSON.stringify(body.canvasData),
+                    id,
+                })
         }   else {
             alert('Your canvas is too big!!')
         }
