@@ -1,1 +1,66 @@
-.Tools {}
+$button-height-half: 2rem; 
+$button-height: 4rem;
+
+.Tools {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 1rem;
+  background-color: #e4f0f2;
+  box-shadow: 11px 17px 34px -10px #e5c3f0;
+  width: 8rem;
+  margin: 5rem 5rem 5rem auto;
+  border-radius: 1rem;
+
+  .toolsContainer {
+    // display: flex;
+    // flex-direction: row;
+    width: 100%;
+
+    button {
+      height: $button-height-half;
+      width: 100%;
+      border: none;
+      background-color: #e08484;
+      border-radius: 0.5rem;
+      color: #FFFF;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #cf6e6e;
+
+    }
+
+    input {
+      padding: 0;
+      border: 0;
+      width: 100%;
+      height: $button-height-half;
+      margin-bottom: 1rem;
+      cursor: pointer;
+   }
+
+    .brushButtonsContainer {
+      button {
+        border-radius: 1rem;
+        border: none;
+        background-color: #e5c3f0;
+        margin: 0.2rem;
+        width: 3.6rem;
+        height: $button-height;
+        cursor: pointer;
+        img {
+          width: 100%;
+        }
+      }
+      button:hover {
+        background-color: #cf6e6e;
+      }
+    }
+
+  
+  }
+
+ 
+}

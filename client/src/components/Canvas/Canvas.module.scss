@@ -2,6 +2,37 @@ $bg_color: red;
 
 .Canvas {
 
-  .saveButton {
+  .appHeader {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    
+    padding: 0.5rem 1rem;
+    background-color: yellow;
+   
+
+    button {
+      width: 4rem;
+      margin: 0 2rem;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      border: none;
+    }
+    button:hover {
+      text-decoration: underline;
+      border: solid black 0.2rem;
+    }
+  }
+
+  .canvasContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    canvas {
+      box-shadow: 11px 17px 34px -10px #e5c3f0;
+      margin: 2rem;
+    }
   }
 }

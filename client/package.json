@@ -9,8 +9,10 @@
     "fabric": "^3.6.3",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
+    "reactjs-popup": "^1.5.0",
     "socket.io-client": "^2.3.0"
   },
   "scripts": {
