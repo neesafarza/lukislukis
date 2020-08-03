@@ -16,6 +16,9 @@ function Login({ name, setName }) {
   return (
     <div className={styles.login} data-testid="login">
       <img src={background} />
+      <div className={styles.heading}>
+        <h1>Lukis</h1>
+      </div>
       <div className={styles.loginForm}>
         <label className={styles.formElement}>Please Enter Your Name</label>
         <input className={styles.formElement} type="text" name="login" onChange={handleNameChange} />
@@ -23,6 +26,10 @@ function Login({ name, setName }) {
           Enter
         </button>
       </div>
+      <div className={styles.heading}>
+        <h1>Lukis</h1>
+      </div>
+
     </div>
   );
 }

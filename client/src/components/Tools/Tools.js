@@ -2,12 +2,54 @@ import React, { useEffect, useState } from "react";
 import styles from "./Tools.module.scss";
 import { fabric } from "fabric";
 import { BrushTypes } from "../../domain/brushTypes";
-import image from "../../images/bubbles.jpg";
+import bubbles from "../../images/bubbles.jpg";
+import circle from "../../images/circle.png";
+import pencil from "../../images/pencil.png";
+import spray from "../../images/spray.png";
+import square from "../../images/square.png";
+import triangle from "../../images/triangle.png";
+import ApiService from "../../ApiService";
 
-function Tools({ canvas }) {
+const MAX_SIZE = 5_000_000;
+
+function Tools({ canvas, socket, name, id, lock, setLock }) {
   const [brushSize, setBrushSize] = useState(1);
   const [color, setColor] = useState("black");
   const [drawingMode, setDrawingMode] = useState(true);
+
+  const save = () => {
+    console.log(canvas);
+    if (canvas && JSON.stringify(canvas.toJSON()).length < MAX_SIZE) {
+      const body = {
+        _id: id,
+        canvasData: JSON.stringify(canvas.toJSON()),
+      };
+      ApiService.createResource("canvas", body, "PUT")
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+      socket.emit("save", {
+        data: JSON.stringify(body.canvasData),
+        id,
+      });
+    } else {
+      alert("Your canvas is too big!!");
+    }
+  };
+
+  const isDisabled = () => {
+    return lock.name !== name && lock.name !== undefined;
+  };
+
+  const clear = () => {
+    canvasLock();
+    canvas.clear();
+  };
+
+  const canvasLock = () => {
+    if (!lock.name) {
+      socket.emit("lock", name);
+    }
+  };
 
   const changeColor = ({ target }) => {
     setColor(() => target.value);
@@ -17,6 +59,22 @@ function Tools({ canvas }) {
     setBrushSize(() => {
       return parseInt(target.value, 10) || 1;
     });
+  };
+
+  const changeBrushType = (type) => (e) => {
+    console.log(canvas);
+    if (type === BrushTypes.BUBBLES) {
+      canvas.freeDrawingBrush = new fabric.CircleBrush(canvas);
+    }
+    if (type === BrushTypes.SPRAY) {
+      canvas.freeDrawingBrush = new fabric.SprayBrush(canvas);
+    }
+    if (type === BrushTypes.PENCIL) {
+      canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+    }
+    canvas.freeDrawingBrush.width = brushSize;
+    canvas.freeDrawingBrush.color = color;
+    canvas.isDrawingMode = drawingMode;
   };
 
   const toggleDrawingMode = () => {
@@ -37,28 +95,11 @@ function Tools({ canvas }) {
     drawingMode,
   ]);
 
-  const changeBrushType = (e) => {
-    if (e.target.value === BrushTypes.BUBBLES) {
-      canvas.freeDrawingBrush = new fabric.CircleBrush(canvas);
-    }
-    if (e.target.value === BrushTypes.SPRAY) {
-      canvas.freeDrawingBrush = new fabric.SprayBrush(canvas);
-    }
-    if (e.target.value === BrushTypes.PENCIL) {
-      canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-    }
-    canvas.freeDrawingBrush.width = brushSize;
-    canvas.freeDrawingBrush.color = color;
-    canvas.isDrawingMode = drawingMode;
-  };
-
   const addRectangle = () => {
     setDrawingMode(false);
     const rect = new fabric.Rect();
-    rect.set("fill", "red");
-    rect.set({ strokeWidth: 5, stroke: "rgba(100,200,200,0.5)" });
     rect.set("angle", 15).set("flipY", true);
-    rect.set({ width: 100, height: 80, fill: "#f55" });
+    rect.set({ width: 100, height: 80, fill: color });
     rect.set("selectable", true);
     canvas.add(rect).setActiveObject(rect);
   };
@@ -66,10 +107,8 @@ function Tools({ canvas }) {
   const addTriangle = () => {
     setDrawingMode(false);
     const triangle = new fabric.Triangle();
-    triangle.set("fill", "red");
-    triangle.set({ strokeWidth: 5, stroke: "rgba(100,200,200,0.5)" });
     triangle.set("angle", 15).set("flipY", true);
-    triangle.set({ width: 100, height: 80, fill: "#f55" });
+    triangle.set({ width: 100, height: 80, fill: color });
     triangle.set("selectable", true);
     canvas.add(triangle).setActiveObject(triangle);
   };
@@ -77,10 +116,8 @@ function Tools({ canvas }) {
   const addCircle = () => {
     setDrawingMode(false);
     const circle = new fabric.Circle();
-    circle.set("fill", "red");
-    circle.set({ strokeWidth: 5, stroke: "rgba(100,200,200,0.5)" });
     circle.set("angle", 15).set("flipY", true);
-    circle.set({ radius: 100, height: 80, fill: "#f55" });
+    circle.set({ radius: 100, height: 80, fill: color });
     circle.set("selectable", true);
     canvas.add(circle).setActiveObject(circle);
   };
@@ -94,25 +131,39 @@ function Tools({ canvas }) {
         <input type={"range"} min={1} max={100} onChange={changeBrushSize} />
         <input type={"color"} onChange={changeColor} />
         <div className={styles.brushButtonsContainer}>
-          <button onClick={changeBrushType} value={BrushTypes.BUBBLES}>
-            <img src={image} />
+          <button onClick={changeBrushType(BrushTypes.BUBBLES)}>
+            <img src={bubbles} />
           </button>
-          <button onClick={changeBrushType} value={BrushTypes.SPRAY}>
-            <img src={image} />
+          <button onClick={changeBrushType(BrushTypes.SPRAY)}>
+            <img src={spray} />
           </button>
-          <button onClick={changeBrushType} value={BrushTypes.PENCIL}>
-            <img src={image} />
+          <button onClick={changeBrushType(BrushTypes.PENCIL)}>
+            <img src={pencil} />
           </button>
           <button onClick={addRectangle}>
-            <img src={image} />
+            <img src={square} />
           </button>
           <button onClick={addTriangle}>
-            <img src={image} />
+            <img src={triangle} />
           </button>
           <button onClick={addCircle}>
-            <img src={image} />
+            <img src={circle} />
           </button>
         </div>
+        <button
+          className={styles.saveButton}
+          disabled={isDisabled()}
+          onClick={save}
+        >
+          send
+        </button>
+        <button
+          className={styles.clearButton}
+          disabled={isDisabled()}
+          onClick={clear}
+        >
+          clear
+        </button>
       </div>
     </div>
   );

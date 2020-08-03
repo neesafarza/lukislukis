@@ -11,15 +11,18 @@ const UserList = ({socket}) => {
   },[])
 
   const getUserList = () => {
-    const result = [];
+    let result = [];
     for(let user of userList) {
-      result.push(user.name)
+    result.push(<div className={styles.singleUser}>{user.name + ' '}</div>)
     }
-    return result;
+    return result
   }
 
   return (
   <div className={styles.UserList} data-testid="UserList">
+    <div className={styles.listHeader}>
+    <span>Fellow Artists Connected:</span>
+    </div>
     {getUserList()}
   </div>
   );

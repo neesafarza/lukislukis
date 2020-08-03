@@ -1,1 +1,25 @@
-.UserList {}
+.UserList {
+  justify-content: center;
+  align-self: center;
+  align-content: center;
+  border: 0.5rem solid;
+  border-image:   linear-gradient(to right, #efee9d 25%, #efbbcf 25%, #efbbcf 50%, #efee9d 50%, #efee9d 75%, #dbc6eb 75%) 5;
+  padding: 1rem;
+  box-shadow: 11px 17px 34px -10px #e5c3f0;
+
+
+  .listHeader {
+    span {
+      text-align: center;
+     -webkit-font-smoothing : none;
+     font-weight: bold;
+
+    }
+    padding-bottom: 1rem;
+  }
+
+  .singleUser {
+    text-align: center;
+  }
+  
+}

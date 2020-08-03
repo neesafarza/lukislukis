@@ -4,16 +4,10 @@ import { fabric } from "fabric";
 import Tools from "../Tools/Tools";
 import ApiService from "../../ApiService";
 
-const MAX_SIZE = 5_000_000;
-
 function Canvas({ name, setName, socket }) {
   const [canvas, setCanvas] = useState({});
   const [id, setId] = useState("");
   const [lock, setLock] = useState({});
-
-  const isDisabled = () => {
-    return lock.name !== name && lock.name !== undefined;
-  };
 
   const initCanvas = () => {
     return new fabric.Canvas("main-canvas", {
@@ -34,7 +28,7 @@ function Canvas({ name, setName, socket }) {
           canvas.isDrawingMode = false;
           canvas.forEachObject((obj) => (obj.selectable = false));
         } else {
-          canvas.isDrawingMode = true;
+          // canvas.isDrawingMode = true;
           canvas.forEachObject((obj) => (obj.selectable = true));
         }
       }
@@ -79,33 +73,6 @@ function Canvas({ name, setName, socket }) {
       });
   }, []);
 
-  const save = () => {
-    if (canvas && JSON.stringify(canvas.toJSON()).length < MAX_SIZE) {
-      const body = {
-        _id: id,
-        canvasData: JSON.stringify(canvas.toJSON()),
-      };
-      ApiService.createResource("canvas", body, "PUT")
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-      socket.emit("save", {
-        data: JSON.stringify(body.canvasData),
-        id,
-      });
-    } else {
-      alert("Your canvas is too big!!");
-    }
-  };
-
-  const clear = () => {
-    canvasLock();
-    canvas.clear();
-  };
-
-  const logout = () => {
-    socket.emit("leave");
-    setName("");
-  };
 
   const canvasLock = () => {
     if (!lock.name) {
@@ -115,11 +82,8 @@ function Canvas({ name, setName, socket }) {
 
   return (
     <div className={styles.Canvas} data-testid="Canvas">
-      <div className={styles.appHeader}>
-      <p>Hello {name}</p>
-      <button onClick={logout}>Logout</button>
-      </div>
       
+
       <div className={styles.canvasContainer}>
         <div onClick={canvasLock}>
           <canvas
@@ -128,32 +92,24 @@ function Canvas({ name, setName, socket }) {
           ></canvas>
         </div>
         <div className={"toolbox"}>
-          <Tools canvas={canvas} />
+          <Tools
+            canvas={canvas}
+            socket={socket}
+            name={name}
+            setName={setName}
+            id={id}
+            lock={lock}
+            setLock={setLock}
+          />
         </div>
       </div>
-
-      <button
-        className={styles.saveButton}
-        disabled={isDisabled()}
-        onClick={save}
-      >
-        save
-      </button>
-      <button
-        className={styles.clearButton}
-        disabled={isDisabled()}
-        onClick={clear}
-      >
-        clear
-      </button>
-
-      <div>lockby {lock.name}</div>
+      {
+        lock.name && lock.name !== '' ? 
+          (<div className={styles.status}>{lock.name} is currently drawing...</div>): 
+          (<div></div>)
+      }
     </div>
   );
 }
-
-Canvas.propTypes = {};
-
-Canvas.defaultProps = {};
 
 export default Canvas;
