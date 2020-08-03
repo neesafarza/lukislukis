@@ -49,9 +49,6 @@ function App() {
             </div>
             <div className={styles.container}>
               <Canvas socket={socket} name={name} setName={setName} />
-              <div className="userList">
-              <UserList socket={socket} />
-              </div>
             </div>
           </div>
         ) : (

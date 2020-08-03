@@ -3,8 +3,10 @@ import styles from "./Canvas.module.scss";
 import { fabric } from "fabric";
 import Tools from "../Tools/Tools";
 import ApiService from "../../ApiService";
+import lock from "../../images/lock.png"
+import UserList from "../UserList/UserList";
 
-function Canvas({ name, setName, socket }) {
+function Canvas({ name, setName, socket,  }) {
   const [canvas, setCanvas] = useState({});
   const [id, setId] = useState("");
   const [lock, setLock] = useState({});
@@ -12,8 +14,8 @@ function Canvas({ name, setName, socket }) {
   const initCanvas = () => {
     return new fabric.Canvas("main-canvas", {
       preserveObjectStacking: true,
-      height: 600,
-      width: 800,
+      height: window.innerHeight * 0.75,
+      width: window.innerWidth * 0.6,
       backgroundColor: "cyan",
       isDrawingMode: true,
     });
@@ -91,7 +93,7 @@ function Canvas({ name, setName, socket }) {
             id="main-canvas"
           ></canvas>
         </div>
-        <div className={"toolbox"}>
+        <div className={styles.toolbox}>
           <Tools
             canvas={canvas}
             socket={socket}
@@ -101,6 +103,9 @@ function Canvas({ name, setName, socket }) {
             lock={lock}
             setLock={setLock}
           />
+          <div className="userList">
+              <UserList socket={socket} />
+              </div>
         </div>
       </div>
       {
