@@ -22,7 +22,7 @@ exports.findCanvas = async(id) => {
 exports.findMainCanvas = async () => {
     let canvas = await Canvas.findOne({isMainCanvas: true});
     if(!canvas) {
-        return createCanvas(true);
+        return this.createCanvas(true);
     }
     return canvas;
 }
