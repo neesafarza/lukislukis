@@ -62,7 +62,6 @@ function Tools({ canvas, socket, name, id, lock, setLock }) {
   };
 
   const changeBrushType = (type) => (e) => {
-    console.log(canvas);
     if (type === BrushTypes.BUBBLES) {
       canvas.freeDrawingBrush = new fabric.CircleBrush(canvas);
     }
@@ -74,6 +73,7 @@ function Tools({ canvas, socket, name, id, lock, setLock }) {
     }
     canvas.freeDrawingBrush.width = brushSize;
     canvas.freeDrawingBrush.color = color;
+    setDrawingMode(true);
     canvas.isDrawingMode = drawingMode;
   };
 
