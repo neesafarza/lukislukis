@@ -13,6 +13,14 @@ Clear will clear the canvas but it will also locked it. users can send over clea
 - Npm / Node
 - Mongodb
 
+## Technologies
+- [Node js](https://nodejs.org/)
+- [Socket.io](https://socket.io/)
+- [Fabric.js](http://fabricjs.com/)
+- [Mongoose](https://mongoosejs.com/)
+- [Express](https://expressjs.com/)
+- [React](https://reactjs.org/)
+
 ## Testing
 This product is set up with react unit test library found [here](https://testing-library.com/docs/react-testing-library/intro)
 The test-cases are incomplete.
