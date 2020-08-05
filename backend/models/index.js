@@ -5,8 +5,6 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .catch((err) => {
-    console.log('err', err);
-  });
+  .catch(console.error);
 
 module.exports = mongoose;

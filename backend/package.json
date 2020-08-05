@@ -6,7 +6,9 @@
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pretty": "./node_modules/.bin/prettier --write './**/*.{js,json,md}'"
+    "eslint": "eslint . --ext .js",
+    "pretty": "./node_modules/.bin/prettier --write './**/*.{js,json,md}'",
+    "check": "npm run eslint && npm run pretty"
   },
   "keywords": [],
   "author": "",
@@ -18,5 +20,10 @@
     "mongoose": "^5.9.26",
     "nodemon": "2.0.4",
     "prettier": "^2.0.5"
+  },
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0"
   }
 }

@@ -1,8 +1,7 @@
 const express = require('express');
-const router = require('./router');
 const cors = require('cors');
-const mongoose = require('./models/index');
 const bodyParser = require('body-parser');
+const router = require('./router');
 
 const app = express();
 const PORT = 8080;
@@ -13,6 +12,4 @@ app.use(bodyParser.urlencoded({ limit: '500MB', extended: true }));
 app.use(express.json());
 app.use(router);
 
-app.listen(PORT, () => {
-  console.log(`listening at ${PORT}`);
-});
+app.listen(PORT, () => console.info(`listening at ${PORT}`));
