@@ -6,7 +6,7 @@ import Canvas from './Canvas';
 describe('<Canvas />', () => {
   test('it should mount', () => {
     render(<Canvas />);
-    
+
     const canvas = screen.getByTestId('Canvas');
 
     expect(canvas).toBeInTheDocument();

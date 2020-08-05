@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from "react";
-import styles from "./Canvas.module.scss";
-import { fabric } from "fabric";
-import Tools from "../Tools/Tools";
-import ApiService from "../../ApiService";
-import lock from "../../images/lock.png"
-import UserList from "../UserList/UserList";
+import React, { useEffect, useState } from 'react';
+import styles from './Canvas.module.scss';
+import { fabric } from 'fabric';
+import Tools from '../Tools/Tools';
+import ApiService from '../../ApiService';
+import lock from '../../images/lock.png';
+import UserList from '../UserList/UserList';
 
-function Canvas({ name, setName, socket,  }) {
+function Canvas({ name, setName, socket }) {
   const [canvas, setCanvas] = useState({});
-  const [id, setId] = useState("");
+  const [id, setId] = useState('');
   const [lock, setLock] = useState({});
 
   const initCanvas = () => {
-    return new fabric.Canvas("main-canvas", {
+    return new fabric.Canvas('main-canvas', {
       preserveObjectStacking: true,
       height: window.innerHeight * 0.75,
       width: window.innerWidth * 0.6,
-      backgroundColor: "cyan",
+      backgroundColor: 'cyan',
       isDrawingMode: true,
     });
   };
 
   useEffect(() => {
-    socket.emit("getLocks");
-    socket.on("locks", (data) => {
+    socket.emit('getLocks');
+    socket.on('locks', (data) => {
       setLock(data);
       if (Object.keys(canvas).length > 0) {
         if (data.name && data.name !== name) {
@@ -38,8 +38,8 @@ function Canvas({ name, setName, socket,  }) {
   }, [lock]);
 
   useEffect(() => {
-    socket.on("connection", (data) => setId(data));
-    socket.on("saving", (data) => {
+    socket.on('connection', (data) => setId(data));
+    socket.on('saving', (data) => {
       if (Object.keys(canvas).length > 1) {
         canvas.loadFromJSON(JSON.parse(data.data), () => {
           setCanvas(canvas);
@@ -50,7 +50,7 @@ function Canvas({ name, setName, socket,  }) {
   }, [canvas]);
 
   useEffect(() => {
-    ApiService.getResource("main-canvas")
+    ApiService.getResource('main-canvas')
       .then((res) => {
         res
           .json()
@@ -75,23 +75,17 @@ function Canvas({ name, setName, socket,  }) {
       });
   }, []);
 
-
   const canvasLock = () => {
     if (!lock.name) {
-      socket.emit("lock", name);
+      socket.emit('lock', name);
     }
   };
 
   return (
     <div className={styles.Canvas} data-testid="Canvas">
-      
-
       <div className={styles.canvasContainer}>
         <div onClick={canvasLock}>
-          <canvas
-            style={{ border: "so lid 1px #eee" }}
-            id="main-canvas"
-          ></canvas>
+          <canvas style={{ border: 'so lid 1px #eee' }} id="main-canvas"></canvas>
         </div>
         <div className={styles.toolbox}>
           <Tools
@@ -104,15 +98,15 @@ function Canvas({ name, setName, socket,  }) {
             setLock={setLock}
           />
           <div className="userList">
-              <UserList socket={socket} />
-              </div>
+            <UserList socket={socket} />
+          </div>
         </div>
       </div>
-      {
-        lock.name && lock.name !== '' ? 
-          (<div className={styles.status}>{lock.name} is currently drawing...</div>): 
-          (<div></div>)
-      }
+      {lock.name && lock.name !== '' ? (
+        <div className={styles.status}>{lock.name} is currently drawing...</div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 }
