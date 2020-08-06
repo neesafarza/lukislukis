@@ -21,6 +21,7 @@ mongoose
   })
   .then(() => {
     console.info('Successfully connected to the Mongo database!');
+    mongoose.connection.on('error', console.error);
     app.listen(PORT, () => console.info(`Server is running at port: ${PORT}`));
   })
   .catch(console.error);
