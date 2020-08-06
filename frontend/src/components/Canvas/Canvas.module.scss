@@ -1,7 +1,4 @@
-
 .Canvas {
-
-
   .canvasContainer {
     display: flex;
     flex-direction: row;
@@ -11,13 +8,12 @@
       box-shadow: 11px 17px 34px -10px #e5c3f0;
     }
   }
-      .toolbox {
-        margin-left: 2rem;
-      }
-
+  .toolbox {
+    margin-left: 2rem;
+  }
 
   .status {
-    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+    background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
     border: none;
     margin: 0rem 1rem 1rem 1rem;
     text-align: center;
@@ -28,7 +24,4 @@
     font-weight: bold;
     font-family: monospace;
   }
-
-
-
 }

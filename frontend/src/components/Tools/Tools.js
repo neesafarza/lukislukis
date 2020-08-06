@@ -1,38 +1,37 @@
-import React, { useEffect, useState } from "react";
-import styles from "./Tools.module.scss";
-import { fabric } from "fabric";
-import { BrushTypes } from "../../domain/brushTypes";
-import bubbles from "../../images/bubbles.jpg";
-import circle from "../../images/circle.png";
-import pencil from "../../images/pencil.png";
-import spray from "../../images/spray.png";
-import square from "../../images/square.png";
-import triangle from "../../images/triangle.png";
-import ApiService from "../../ApiService";
+import React, { useEffect, useState } from 'react';
+import styles from './Tools.module.scss';
+import { fabric } from 'fabric';
+import { BrushTypes } from '../../domain/brushTypes';
+import bubbles from '../../images/bubbles.jpg';
+import circle from '../../images/circle.png';
+import pencil from '../../images/pencil.png';
+import spray from '../../images/spray.png';
+import square from '../../images/square.png';
+import triangle from '../../images/triangle.png';
+import ApiService from '../../ApiService';
 
-const MAX_SIZE = 5_000_000;
+const MAX_SIZE = 5000000;
 
 function Tools({ canvas, socket, name, id, lock, setLock }) {
   const [brushSize, setBrushSize] = useState(1);
-  const [color, setColor] = useState("black");
+  const [color, setColor] = useState('black');
   const [drawingMode, setDrawingMode] = useState(true);
 
   const save = () => {
-    console.log(canvas);
     if (canvas && JSON.stringify(canvas.toJSON()).length < MAX_SIZE) {
       const body = {
         _id: id,
         canvasData: JSON.stringify(canvas.toJSON()),
       };
-      ApiService.createResource("canvas", body, "PUT")
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-      socket.emit("save", {
+      ApiService.createResource('canvas', body, 'PUT')
+        .then((res) => console.info(res))
+        .catch((err) => console.info(err));
+      socket.emit('save', {
         data: JSON.stringify(body.canvasData),
         id,
       });
     } else {
-      alert("Your canvas is too big!!");
+      alert('Your canvas is too big!!');
     }
   };
 
@@ -47,7 +46,7 @@ function Tools({ canvas, socket, name, id, lock, setLock }) {
 
   const canvasLock = () => {
     if (!lock.name) {
-      socket.emit("lock", name);
+      socket.emit('lock', name);
     }
   };
 
@@ -87,49 +86,41 @@ function Tools({ canvas, socket, name, id, lock, setLock }) {
       canvas.freeDrawingBrush.color = color;
       canvas.isDrawingMode = drawingMode;
     }
-  }, [
-    canvas.freeDrawingBrush,
-    brushSize,
-    color,
-    canvas.isDrawingMode,
-    drawingMode,
-  ]);
+  }, [canvas, canvas.freeDrawingBrush, brushSize, color, canvas.isDrawingMode, drawingMode]);
 
   const addRectangle = () => {
     setDrawingMode(false);
     const rect = new fabric.Rect();
-    rect.set("angle", 15).set("flipY", true);
+    rect.set('angle', 15).set('flipY', true);
     rect.set({ width: 100, height: 80, fill: color });
-    rect.set("selectable", true);
+    rect.set('selectable', true);
     canvas.add(rect).setActiveObject(rect);
   };
 
   const addTriangle = () => {
     setDrawingMode(false);
     const triangle = new fabric.Triangle();
-    triangle.set("angle", 15).set("flipY", true);
+    triangle.set('angle', 15).set('flipY', true);
     triangle.set({ width: 100, height: 80, fill: color });
-    triangle.set("selectable", true);
+    triangle.set('selectable', true);
     canvas.add(triangle).setActiveObject(triangle);
   };
 
   const addCircle = () => {
     setDrawingMode(false);
     const circle = new fabric.Circle();
-    circle.set("angle", 15).set("flipY", true);
+    circle.set('angle', 15).set('flipY', true);
     circle.set({ radius: 100, height: 80, fill: color });
-    circle.set("selectable", true);
+    circle.set('selectable', true);
     canvas.add(circle).setActiveObject(circle);
   };
 
   return (
     <div className={styles.Tools}>
       <div className={styles.toolsContainer}>
-        <button onClick={toggleDrawingMode}>
-          {drawingMode ? "Exit" : "Start"} drawing mode
-        </button>
-        <input type={"range"} min={1} max={100} onChange={changeBrushSize} />
-        <input type={"color"} onChange={changeColor} />
+        <button onClick={toggleDrawingMode}>{drawingMode ? 'Exit' : 'Start'} drawing mode</button>
+        <input type={'range'} min={1} max={100} onChange={changeBrushSize} />
+        <input type={'color'} onChange={changeColor} />
         <div className={styles.brushButtonsContainer}>
           <button onClick={changeBrushType(BrushTypes.BUBBLES)}>
             <img src={bubbles} />
@@ -150,18 +141,10 @@ function Tools({ canvas, socket, name, id, lock, setLock }) {
             <img src={circle} />
           </button>
         </div>
-        <button
-          className={styles.saveButton}
-          disabled={isDisabled()}
-          onClick={save}
-        >
+        <button className={styles.saveButton} disabled={isDisabled()} onClick={save}>
           send
         </button>
-        <button
-          className={styles.clearButton}
-          disabled={isDisabled()}
-          onClick={clear}
-        >
+        <button className={styles.clearButton} disabled={isDisabled()} onClick={clear}>
           clear
         </button>
       </div>

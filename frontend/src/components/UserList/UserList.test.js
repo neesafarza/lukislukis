@@ -6,7 +6,7 @@ import UserList from './UserList';
 describe('<UserList />', () => {
   test('it should mount', () => {
     render(<UserList />);
-    
+
     const userList = screen.getByTestId('UserList');
 
     expect(userList).toBeInTheDocument();

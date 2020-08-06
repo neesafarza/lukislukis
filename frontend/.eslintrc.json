@@ -1,0 +1,38 @@
+{
+  "root": true,
+  "extends": [
+    "airbnb/hooks",
+    "plugin:jest/recommended",
+    "prettier",
+    "prettier/react",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["react", "jest"],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "rules": {
+    "linebreak-style": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
+    "no-underscore-dangle": "off"
+  }
+}
