@@ -1,12 +1,14 @@
 const Canvas = require('../models/canvas');
 
-exports.createCanvas = async (isMainCanvas) => {
-  Canvas.create({
-    dateCreated: Date.now(),
-    dateModified: Date.now(),
+exports.createCanvas = async (isMain) => {
+  const canvasData = {
+    dateCreated: new Date(),
+    dateModified: new Date(),
     canvasData: null,
-    isMainCanvas,
-  });
+    isMainCanvas: isMain,
+  };
+  const canvas = await Canvas.create(canvasData);
+  return canvas;
 };
 
 exports.findCanvas = async (id) => {
@@ -18,7 +20,7 @@ exports.findCanvas = async (id) => {
 };
 
 exports.findMainCanvas = async () => {
-  const canvas = await Canvas.findOne({ isMainCanvas: true });
+  const canvas = await Canvas.findOne({ isMainCanvas: true }).exec();
   if (!canvas) {
     return this.createCanvas(true);
   }
