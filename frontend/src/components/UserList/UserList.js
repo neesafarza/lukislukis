@@ -8,7 +8,7 @@ const UserList = ({ socket }) => {
     socket.on('userList', (data) => {
       setUserList(data);
     });
-  }, []);
+  }, [socket]);
 
   const getUserList = () => {
     let result = [];

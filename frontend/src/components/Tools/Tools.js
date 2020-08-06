@@ -10,7 +10,7 @@ import square from '../../images/square.png';
 import triangle from '../../images/triangle.png';
 import ApiService from '../../ApiService';
 
-const MAX_SIZE = 5_000_000;
+const MAX_SIZE = 5000000;
 
 function Tools({ canvas, socket, name, id, lock, setLock }) {
   const [brushSize, setBrushSize] = useState(1);
@@ -18,15 +18,14 @@ function Tools({ canvas, socket, name, id, lock, setLock }) {
   const [drawingMode, setDrawingMode] = useState(true);
 
   const save = () => {
-    console.log(canvas);
     if (canvas && JSON.stringify(canvas.toJSON()).length < MAX_SIZE) {
       const body = {
         _id: id,
         canvasData: JSON.stringify(canvas.toJSON()),
       };
       ApiService.createResource('canvas', body, 'PUT')
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .then((res) => console.info(res))
+        .catch((err) => console.info(err));
       socket.emit('save', {
         data: JSON.stringify(body.canvasData),
         id,
@@ -87,7 +86,7 @@ function Tools({ canvas, socket, name, id, lock, setLock }) {
       canvas.freeDrawingBrush.color = color;
       canvas.isDrawingMode = drawingMode;
     }
-  }, [canvas.freeDrawingBrush, brushSize, color, canvas.isDrawingMode, drawingMode]);
+  }, [canvas, canvas.freeDrawingBrush, brushSize, color, canvas.isDrawingMode, drawingMode]);
 
   const addRectangle = () => {
     setDrawingMode(false);

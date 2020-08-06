@@ -27,7 +27,7 @@ function App() {
       socket.emit('leave');
       removeCookie('name');
     }
-  }, [name]);
+  }, [name, setCookie, removeCookie]);
 
   if (!name === '') {
     return <div className="App"></div>;

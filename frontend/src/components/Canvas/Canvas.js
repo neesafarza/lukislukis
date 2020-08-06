@@ -35,7 +35,7 @@ function Canvas({ name, setName, socket }) {
         }
       }
     });
-  }, [lock]);
+  }, [lock, canvas, name, socket]);
 
   useEffect(() => {
     socket.on('connection', (data) => setId(data));
@@ -47,7 +47,7 @@ function Canvas({ name, setName, socket }) {
         });
       }
     });
-  }, [canvas]);
+  }, [canvas, socket]);
 
   useEffect(() => {
     ApiService.getResource('main-canvas')
