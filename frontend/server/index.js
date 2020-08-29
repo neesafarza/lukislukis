@@ -10,7 +10,7 @@ const removeUser = (socket) => {
 }
 
 io.on("connection", (socket) => {
-  socket.emit("connection", socket.id);
+  cd backend.emit("connection", socket.id);
 
   socket.on("login", (msg) => {});
 
