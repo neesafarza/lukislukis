@@ -8,7 +8,7 @@ I wanted to build an app where friends can hang out and do activities together w
 
 ## Screenshot
 
-![login page](images/login.png)
+![login page](images/lukislukis.png)
 ![the app](images/lukislukis.gif)
 
 ## Dependencies
